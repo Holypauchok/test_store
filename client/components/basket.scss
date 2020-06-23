@@ -1,0 +1,54 @@
+.bag-card {
+  display: flex;
+  width: 100%;
+}
+.bag-list {
+  flex: 0 1 75%;
+}
+.bag-info {
+  flex: 0 1 25%;
+  position: fixed;
+  right: 20em;
+}
+.bag-card__title {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.bag-card__sum-price {
+  display: flex;
+  align-items: flex-end;
+}
+.bag__amount {
+  display: flex;
+  justify-content: start;
+}
+.bag-card__image {
+    display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 140px;
+  padding: 10px 0;
+  .image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    padding: 0px 7px;
+  }
+  flex: 0 1 25%;
+}
+.bag-card__info {
+  flex: 0 1 75%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.bag {
+  display: flex;
+  justify-content: space-between;
+}
+.title {
+  font-size: 36px;
+  margin: 15px 0;
+  font-weight: 400;
+}
