@@ -2,7 +2,6 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import Header from './header'
-import './basket.scss'
 import { addSelection, removeSelection } from '../redux/reducers/products'
 
 const Basket = () => {

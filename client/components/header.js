@@ -1,9 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import './header.scss'
 import { setBase } from '../redux/reducers/products'
-// import { history } from '../redux'
 
 const Header = () => {
   const dispatch = useDispatch()

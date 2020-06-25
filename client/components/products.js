@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Head from './head'
-import './content.scss'
 import {
   addSelection,
   removeSelection,
