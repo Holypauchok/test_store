@@ -5,15 +5,13 @@ const ADD_TO_SELECTION = 'ADD_TO_SELECTION'
 const DEL_FROM_SELECTION = 'DEL_FROM_SELECTION'
 const GET_RATES = 'GET_RATES'
 const SET_BASE = 'SET_BASE'
-const ADD_TO_BASKET = 'ADD_TO_BASKET'
-
-
+const SORT_PRODUCTS = 'SORT_PRODUCTS'
 
 const initialState = {
   productsList: [],
   selection: [],
   rates: {},
-  basketProducts: []
+  sortProducts: []
 }
 
 export default function (state = initialState, action) {
@@ -47,10 +45,6 @@ export default function (state = initialState, action) {
         selection: newSelection
       }
     }
-    case ADD_TO_BASKET: {
-      return { ...state, basketProducts: action.basket }
-    }
-
     case GET_PRODUCTS_LIST: {
       return { ...state, productsList: action.data }
     }
@@ -59,6 +53,9 @@ export default function (state = initialState, action) {
     }
     case SET_BASE: {
       return { ...state, base: action.base }
+    }
+    case SORT_PRODUCTS: {
+      return { ...state, productsList: action.sorted }
     }
     default:
       return state
@@ -93,7 +90,16 @@ export function setBase(base) {
   return { type: SET_BASE, base }
 }
 
-export function addBasket(basket) {
-  return { type: ADD_TO_BASKET, basket }
+export function sortProductList(listProd, type) {
+    const types = {
+      price: 'price',
+      "A-Z": 'title'
+    }
+    const sortProperty = types[type]
+    const sorted = [...listProd].sort((a, b) => {
+      if (a[sortProperty] > b[sortProperty]) return 1
+      if (a[sortProperty] < b[sortProperty]) return -1
+      return 0
+    })
+    return { type: SORT_PRODUCTS, sorted }
 }
-

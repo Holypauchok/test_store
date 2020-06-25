@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Head from './head'
 import {
   addSelection,
   removeSelection,
   getProducts,
-  getRates
+  getRates,
+  sortProductList
 } from '../redux/reducers/products'
 
 const Products = () => {
@@ -15,9 +16,6 @@ const Products = () => {
   const select = useSelector((s) => s.products.selection)
   const rates = useSelector((s) => s.products.rates)
   const base = useSelector((s) => s.products.base)
-
-
-
   useEffect(() => {
     dispatch(getProducts())
     dispatch(getRates())
@@ -28,48 +26,27 @@ const Products = () => {
     EUR: 'E',
     CAD: 'C'
   }
-
-  const [list, setList] = useState([])
-  const [sortType, setSortType] = useState('')
-
-  useEffect(() => {
-    const sortArray = (type) => {
-      const types = {
-        price: 'price',
-        title: 'title'
-      }
-      const sortProperty = types[type]
-      const sorted = [...listProd].sort((a, b) => {
-        if (a[sortProperty] > b[sortProperty]) return 1
-        if (a[sortProperty] < b[sortProperty]) return -1
-        return 0
-      })
-      setList(sorted)
-      console.log(typeof sortProperty)
-    }
-
-    sortArray(sortType)
-  }, [sortType, listProd])
-  console.log(sortType)
   return (
     <div>
       <Head title="Hello" />
       <div className="content">
         <div className="container">
           <div className="content__filter">
-            {/* <select onChange={(e) => setSortType(e.target.value)}>
-              <option value="title">A-Z</option>
-              <option value="price">Price</option>
-            </select> */}
-            <button type="button" value="title" onClick={(e) => setSortType(e.target.value)}>
-              A-Z
-            </button>
-            <button type="button" value="price" onClick={(e) => setSortType(e.target.value)}>
-              price
-            </button>
+            {['A-Z', 'price'].map((it) => {
+              return (
+                <button
+                  key={it}
+                  type="button"
+                  value={it}
+                  onClick={(e) => dispatch(sortProductList(listProd, e.target.value))}
+                >
+                  {it}
+                </button>
+              )
+            })}
           </div>
           <div className="cards-list">
-            {list.map((card) => {
+            {listProd.map((card) => {
               return (
                 <div className="card" key={card.title}>
                   <div className="card__image">
@@ -87,7 +64,6 @@ const Products = () => {
                         type="button"
                         onClick={() => {
                           dispatch(removeSelection(card.id))
-
                         }}
                       >
                         -
