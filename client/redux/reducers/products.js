@@ -91,15 +91,15 @@ export function setBase(base) {
 }
 
 export function sortProductList(listProd, type) {
-    const types = {
-      price: 'price',
-      "A-Z": 'title'
-    }
-    const sortProperty = types[type]
-    const sorted = [...listProd].sort((a, b) => {
-      if (a[sortProperty] > b[sortProperty]) return 1
-      if (a[sortProperty] < b[sortProperty]) return -1
-      return 0
-    })
-    return { type: SORT_PRODUCTS, sorted }
+  const types = {
+    price: 'price',
+    'A-Z': 'title'
+  }
+  const sortProperty = types[type]
+  const sorted = [...listProd].sort((a, b) => {
+    if (a[sortProperty] > b[sortProperty]) return 1
+    if (a[sortProperty] < b[sortProperty]) return -1
+    return 0
+  })
+  return { type: SORT_PRODUCTS, sorted }
 }

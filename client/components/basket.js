@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-
+import { Link } from 'react-router-dom'
 import Header from './header'
-import { addSelection, removeSelection } from '../redux/reducers/products'
+import { addSelection, removeSelection, getProducts, getRates } from '../redux/reducers/products'
 
 const Basket = () => {
   const dispatch = useDispatch()
@@ -15,6 +15,10 @@ const Basket = () => {
   const basketList = Object.entries(select).reduce((acc, [id, qty]) => {
     return [...acc, { ...getProduct(id), amount: qty }]
   }, [])
+    useEffect(() => {
+      dispatch(getProducts())
+      dispatch(getRates())
+    }, [])
   const sum = Object.entries(select)
     .reduce((acc, [id, qty]) => acc + getProduct(id).price * qty * (rates[base] || 1), 0)
     .toFixed(2)
@@ -24,111 +28,63 @@ const Basket = () => {
     CAD: 'C'
   }
 
-  return (
+  return Object.keys(basketList).length === 0 ? (
+    <div>
+      <Header />
+      <div className="bag__title">
+        hey, your bag is empty. Go to <Link to="/">main</Link>
+      </div>
+    </div>
+  ) : (
     <div>
       <Header />
       <div>
-        <div className="container">
-          <div className="bag">
-            <div className="bag-list">
-              <div className="title">Bag</div>
-              <div className="bag-list__items">
-                {basketList.map((card) => {
-                  return (
-                    <div className="bag-card" key={card.title}>
-                      <div className="bag-card__image">
-                        <img className="image" src={card.image} alt={card.title} />
-                      </div>
-                      <div className="bag-card__info">
-                        <div className="bag-card__title">
-                          <h3>{card.title}</h3>
-                          <div className="bag__price">
-                            {(card.price * (rates[base] || 1)).toFixed(2)} {symbols[base]}
-                          </div>
-                          <div className="bag__amount">
-                            <div className="bag__button-del">
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  dispatch(removeSelection(card.id))
-                                }}
-                              >
-                                -
-                              </button>
-                            </div>
-                            <div className="bag__product-amount">{select[card.id] || 0}</div>
-
-                            <div className="bag__button-add">
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  dispatch(addSelection(card.id))
-                                }}
-                              >
-                                +
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="bag-card__sum-price">
-                          {((select[card.id] || 0) * (card.price * (rates[base] || 1))).toFixed(2)}{' '}
-                          {symbols[base]}
-                        </div>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </div>
-            <div className="bag-info">
-              <div className="title">Summary</div>
-              <div className="bag__total-price">
-                {sum} {symbols[base]}
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* <div className="basket-list">
-          {basketList.map((card) => {
-            return (
-              <div className="card" key={card.title}>
-                <div className="card__image">
-                  <img className="image" src={card.image} alt={card.title} />
-                </div>
-                <div className="card__info">
-                  <div className="card__title">{card.title}</div>
-                  <div className="card__price">
-                    {(card.price * (rates[base] || 1)).toFixed(2)} {symbols[base]}
+        <div className="bag container">
+          <div className="bag__title">Bag</div>
+          <div className="bag__list">
+            {basketList.map((card) => {
+              return (
+                <div className="product" key={card.title}>
+                  <div className="prod-img">
+                    <img className="product__image" src={card.image} alt={card.title} />
                   </div>
-                </div>
-                <div className="card__amount">
-                  <div className="card__button-del">
+                  <div className="product__info">
+                    <h3 className="product__title">{card.title}</h3>
+                    <div className="product__price">
+                      {(card.price * (rates[base] || 1)).toFixed(2)} {symbols[base]}
+                    </div>
+                    <div className="product__amount">{select[card.id] || 0}</div>
+                    <div className="product__total_price">
+                      {((select[card.id] || 0) * (card.price * (rates[base] || 1))).toFixed(2)}{' '}
+                      {symbols[base]}
+                    </div>
                     <button
                       type="button"
+                      className="product__remove"
                       onClick={() => {
                         dispatch(removeSelection(card.id))
                       }}
                     >
-                      -
+                      remove
                     </button>
-                  </div>
-                  <div className="card__product-amount">{select[card.id] || 0}</div>
-
-                  <div className="card__button-add">
                     <button
+                      className="product__add"
                       type="button"
                       onClick={() => {
                         dispatch(addSelection(card.id))
                       }}
                     >
-                      +
+                      add
                     </button>
                   </div>
                 </div>
-              </div>
-            )
-          })}
-        </div> */}
+              )
+            })}
+          </div>
+          <div className="bag__sum">
+            total sum: {sum} {symbols[base]}
+          </div>
+        </div>
       </div>
     </div>
   )

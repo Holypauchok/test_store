@@ -31,6 +31,7 @@ const Products = () => {
       <Head title="Hello" />
       <div className="content">
         <div className="container">
+          <div className="content__title">choose any products</div>
           <div className="content__filter">
             {['A-Z', 'price'].map((it) => {
               return (

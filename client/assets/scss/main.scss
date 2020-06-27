@@ -2,8 +2,9 @@
 @tailwind  base;
 @tailwind  components;
 /* purgecss end ignore */
-@import './basket.scss';
+
 @import './header.scss';
 @import './content.scss';
+@import './basket.scss';
 
 @tailwind utilities;

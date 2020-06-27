@@ -7,8 +7,6 @@ import Products from './products'
 // import wave from '../assets/images/wave.jpg'
 
 const Home = () => {
-
-
   return (
     <div>
       <Header />
